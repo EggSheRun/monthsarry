@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#17111a">
+<title>Happy 9th Monthsary, Kaykay</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Quicksand:wght@400;500;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --rose:#f0aac2;
+    --rose-deep:#e390ab;
+    --rose-soft:#c97b93;
+    --bg:#17111a;
+    --bg-2:#1e1521;
+    --card:#261b2b;
+    --card-border:#3d2b44;
+    --lav:#b9a8d9;
+    --ink:#efe4ea;
+    --ink-soft:#b39fae;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Quicksand',sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    overflow-x:hidden;
+    line-height:1.7;
+  }
+
+  /* ---------- floating hearts canvas ---------- */
+  #hearts{
+    position:fixed;inset:0;
+    pointer-events:none;
+    z-index:1;
+  }
+
+  section{position:relative;z-index:2;}
+
+  /* ================= LOADING SCREEN (pure CSS — works even without JS) ================= */
+  #loader{
+    position:fixed;inset:0;
+    z-index:100;
+    background:radial-gradient(circle at 50% 30%, #241a2c 0%, #130e17 70%);
+    display:flex;flex-direction:column;
+    align-items:center;justify-content:center;
+    padding:2rem 1.2rem;
+    animation:loaderExit 1s ease 5.6s forwards; /* auto-enter even if JS is blocked */
+  }
+  @keyframes loaderExit{
+    to{opacity:0;visibility:hidden;pointer-events:none;}
+  }
+  .loader-title{
+    font-family:'Great Vibes',cursive;
+    font-size:clamp(1.9rem,6vw,3rem);
+    color:var(--rose);
+    margin-bottom:1.6rem;
+    text-align:center;
+    animation:titleGlow 2.4s ease infinite alternate;
+  }
+  @keyframes titleGlow{
+    from{text-shadow:0 0 14px rgba(227,144,171,.25);}
+    to{text-shadow:0 0 34px rgba(227,144,171,.55);}
+  }
+  .loader-grid{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(80px,110px));
+    gap:.8rem;
+    margin-bottom:1.8rem;
+  }
+  .mini-photo{
+    aspect-ratio:1;
+    border-radius:20px;
+    overflow:hidden;
+    background:linear-gradient(135deg,#2e2135,#1d1420);
+    border:1px solid var(--card-border);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--ink-soft);font-size:.65rem;text-align:center;padding:.4rem;
+    opacity:0;
+    animation:pop .55s cubic-bezier(.34,1.56,.64,1) forwards;
+  }
+  .mini-photo:nth-child(1){animation-delay:.30s}
+  .mini-photo:nth-child(2){animation-delay:.52s}
+  .mini-photo:nth-child(3){animation-delay:.74s}
+  .mini-photo:nth-child(4){animation-delay:.96s}
+  .mini-photo:nth-child(5){animation-delay:1.18s}
+  .mini-photo:nth-child(6){animation-delay:1.40s}
+  .mini-photo:nth-child(7){animation-delay:1.62s}
+  .mini-photo:nth-child(8){animation-delay:1.84s}
+  .mini-photo:nth-child(9){animation-delay:2.06s}
+  @keyframes pop{
+    from{opacity:0;transform:scale(.6) rotate(-4deg);}
+    to{opacity:1;transform:scale(1) rotate(0);}
+  }
+  .mini-photo img{width:100%;height:100%;object-fit:cover;display:block;border-radius:14px;}
+  .loader-bar{
+    width:min(340px,80vw);
+    height:6px;
+    background:#2c2033;
+    border-radius:999px;
+    overflow:hidden;
+    margin-bottom:.9rem;
+  }
+  #loaderFill{
+    height:100%;width:0%;
+    background:linear-gradient(90deg,var(--lav),var(--rose));
+    border-radius:999px;
+    animation:fillBar 4.6s ease .3s forwards;
+  }
+  @keyframes fillBar{from{width:0;}to{width:100%;}}
+  #loaderText{
+    position:relative;
+    width:min(340px,80vw);
+    height:1.6em;
+    margin-bottom:1.4rem;
+    font-size:.85rem;color:var(--ink-soft);
+    letter-spacing:.1em;
+  }
+  #loaderText span{
+    position:absolute;left:0;right:0;
+    opacity:0;
+    animation-duration:5.2s;
+    animation-fill-mode:forwards;
+    white-space:nowrap;
+  }
+  #loaderText .p1{animation-name:ph1;}
+  #loaderText .p2{animation-name:ph2;}
+  #loaderText .p3{animation-name:ph3;}
+  #loaderText .p4{animation-name:ph4;}
+  @keyframes ph1{0%{opacity:0}2%{opacity:1}22%{opacity:1}27%{opacity:0}100%{opacity:0}}
+  @keyframes ph2{0%,26%{opacity:0}28%{opacity:1}47%{opacity:1}52%{opacity:0}100%{opacity:0}}
+  @keyframes ph3{0%,51%{opacity:0}53%{opacity:1}72%{opacity:1}77%{opacity:0}100%{opacity:0}}
+  @keyframes ph4{0%,76%{opacity:0}78%{opacity:1}100%{opacity:1}}
+  #enterBtn{
+    font-family:'Quicksand',sans-serif;
+    font-weight:700;font-size:1rem;
+    background:linear-gradient(120deg,var(--rose),var(--rose-soft));
+    color:#2a1420;
+    border:none;
+    border-radius:999px;
+    padding:.95rem 2.4rem;
+    cursor:pointer;
+    box-shadow:0 10px 30px rgba(227,144,171,.35);
+    opacity:0;
+    animation:btnIn .7s ease 4.9s forwards, pulse 2s ease 5.6s infinite;
+  }
+  @keyframes btnIn{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+  @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+  #enterBtn:hover{box-shadow:0 14px 40px rgba(227,144,171,.55);}
+
+  /* ---------- hero ---------- */
+  .hero{
+    min-height:100vh;
+    display:flex;flex-direction:column;
+    align-items:center;justify-content:center;
+    text-align:center;
+    padding:2rem 1.5rem;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(185,168,217,.12), transparent 45%),
+      radial-gradient(circle at 80% 70%, rgba(240,170,194,.10), transparent 50%),
+      linear-gradient(180deg,#1c1322 0%, var(--bg) 100%);
+  }
+  .hero .eyebrow{
+    letter-spacing:.35em;
+    text-transform:uppercase;
+    font-size:.75rem;
+    font-weight:600;
+    color:var(--rose);
+    margin-bottom:1.2rem;
+  }
+  .hero h1{
+    font-family:'Great Vibes',cursive;
+    font-size:clamp(3rem,10vw,5.5rem);
+    font-weight:400;
+    color:var(--rose);
+    line-height:1.15;
+    text-shadow:0 0 40px rgba(227,144,171,.35);
+  }
+  .hero h1 .amp{font-size:.55em;color:var(--ink-soft);font-family:'Playfair Display',serif;font-style:italic;}
+  .hero .months{
+    font-family:'Playfair Display',serif;
+    font-style:italic;
+    font-size:clamp(1.2rem,4vw,1.8rem);
+    color:var(--ink);
+    margin-top:1rem;
+  }
+  .hero .cat{
+    font-size:2.6rem;
+    margin-top:1.2rem;
+    animation:bob 3s ease-in-out infinite;
+    display:inline-block;
+  }
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+  .counter{
+    margin-top:2.2rem;
+    background:rgba(38,27,43,.8);
+    backdrop-filter:blur(6px);
+    border:1px solid var(--card-border);
+    border-radius:20px;
+    padding:1.1rem 2rem;
+    box-shadow:0 10px 30px rgba(0,0,0,.35);
+  }
+  .counter .num{
+    font-family:'Playfair Display',serif;
+    font-size:2rem;
+    font-weight:700;
+    color:var(--rose);
+  }
+  .counter .lbl{font-size:.85rem;color:var(--ink-soft);letter-spacing:.08em;}
+  .scroll-hint{
+    margin-top:2.5rem;
+    font-size:.8rem;color:var(--ink-soft);
+    animation:fadeDown 2s ease infinite;
+  }
+  @keyframes fadeDown{0%{opacity:.3;transform:translateY(-4px)}50%{opacity:1;transform:translateY(2px)}100%{opacity:.3;transform:translateY(-4px)}}
+
+  /* ---------- generic section ---------- */
+  .wrap{max-width:880px;margin:0 auto;padding:5rem 1.5rem;}
+  .section-title{
+    font-family:'Great Vibes',cursive;
+    font-size:clamp(2.2rem,6vw,3.2rem);
+    color:var(--rose);
+    text-align:center;
+    margin-bottom:.4rem;
+    font-weight:400;
+  }
+  .divider{
+    text-align:center;color:var(--rose-deep);
+    letter-spacing:.5em;
+    margin-bottom:2.2rem;
+    font-size:.9rem;
+  }
+  .fade{opacity:0;transform:translateY(26px);transition:opacity .9s ease, transform .9s ease;}
+  .fade.visible{opacity:1;transform:translateY(0);}
+  .no-js .fade{opacity:1;transform:none;}
+
+  /* ---------- our story ---------- */
+  .story{background:linear-gradient(180deg,var(--bg),var(--bg-2));}
+  .story-card{
+    background:var(--card);
+    border-radius:24px;
+    padding:2.4rem 2.2rem;
+    box-shadow:0 12px 40px rgba(0,0,0,.35);
+    border:1px solid var(--card-border);
+  }
+  .story-card p{margin-bottom:1.2rem;font-size:1.05rem;}
+  .story-card p:last-child{margin-bottom:0;}
+  .highlight{
+    background:linear-gradient(120deg,rgba(240,170,194,.22),rgba(185,168,217,.22));
+    border-radius:6px;padding:0 .3em;
+    font-weight:600;color:var(--rose);
+  }
+  .anime-chip{
+    display:inline-block;
+    background:#372a4a;
+    color:var(--lav);
+    border-radius:999px;
+    padding:.15rem .8rem;
+    font-size:.85rem;
+    font-weight:600;
+    margin:0 .15rem;
+  }
+
+  /* ---------- photos ---------- */
+  .photos{background:var(--bg-2);}
+  .gallery{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:1.4rem;
+  }
+  .photo-card{
+    background:#2f2335;
+    padding:.8rem .8rem 2.6rem;
+    border-radius:24px;
+    box-shadow:0 10px 26px rgba(0,0,0,.4);
+    transition:transform .35s ease, box-shadow .35s ease;
+    position:relative;
+  }
+  .photo-card:nth-child(odd){transform:rotate(-2.2deg);}
+  .photo-card:nth-child(even){transform:rotate(1.8deg);}
+  .photo-card:hover{transform:rotate(0) scale(1.04);box-shadow:0 16px 40px rgba(0,0,0,.55);z-index:3;}
+  .photo-frame{
+    width:100%;
+    aspect-ratio:4/5;
+    border-radius:16px;
+    overflow:hidden;
+    background:linear-gradient(135deg,#3a2a42,#241a2b);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--ink-soft);
+    font-size:.8rem;
+    text-align:center;
+    padding:1rem;
+  }
+  .photo-frame img{width:100%;height:100%;object-fit:cover;display:block;border-radius:16px;}
+  .photo-caption{
+    position:absolute;
+    bottom:.55rem;left:0;right:0;
+    text-align:center;
+    font-family:'Great Vibes',cursive;
+    font-size:1.15rem;
+    color:var(--ink);
+  }
+  .photo-note{
+    text-align:center;margin-top:1.6rem;font-size:.85rem;color:var(--ink-soft);
+  }
+
+  /* ---------- letter ---------- */
+  .letter-bg{
+    background:
+      radial-gradient(circle at 85% 10%, rgba(185,168,217,.10), transparent 40%),
+      linear-gradient(180deg,var(--bg-2),var(--bg));
+  }
+  .letter{
+    background:#211827;
+    border:1px solid var(--card-border);
+    border-radius:8px;
+    padding:3rem 2.4rem;
+    box-shadow:0 18px 50px rgba(0,0,0,.4);
+    position:relative;
+    font-family:'Playfair Display',serif;
+    font-size:1.08rem;
+    color:#e5d6de;
+  }
+  .letter p{margin-bottom:1.3rem;}
+  .letter .salutation{font-family:'Great Vibes',cursive;font-size:2rem;color:var(--rose);}
+  .letter .sign{
+    font-family:'Great Vibes',cursive;
+    font-size:1.9rem;
+    color:var(--rose);
+    text-align:right;
+    margin-top:1.5rem;
+  }
+
+  /* ---------- reasons ---------- */
+  .reasons{background:var(--bg);}
+  .reason-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+    gap:1.2rem;
+  }
+  .reason{
+    background:var(--card);
+    border:1px solid var(--card-border);
+    border-radius:18px;
+    padding:1.6rem 1.4rem;
+    box-shadow:0 8px 24px rgba(0,0,0,.3);
+    transition:transform .3s ease;
+  }
+  .reason:hover{transform:translateY(-6px);}
+  .reason .ico{font-size:1.7rem;margin-bottom:.5rem;display:block;}
+  .reason h3{
+    font-family:'Playfair Display',serif;
+    font-size:1.05rem;
+    color:var(--rose);
+    margin-bottom:.35rem;
+  }
+  .reason p{font-size:.92rem;color:var(--ink-soft);}
+
+  /* ---------- quotes ---------- */
+  .quotes{background:linear-gradient(180deg,var(--bg),#241c33 160%);}
+  .quote{
+    text-align:center;
+    max-width:620px;
+    margin:0 auto 2.6rem;
+  }
+  .quote blockquote{
+    font-family:'Playfair Display',serif;
+    font-style:italic;
+    font-size:clamp(1.15rem,3.4vw,1.5rem);
+    color:var(--ink);
+  }
+  .quote cite{
+    display:block;margin-top:.7rem;
+    font-family:'Quicksand',sans-serif;
+    font-style:normal;
+    font-size:.85rem;
+    letter-spacing:.15em;
+    text-transform:uppercase;
+    color:var(--rose);
+  }
+
+  /* ---------- finale ---------- */
+  .finale{
+    min-height:70vh;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;
+    padding:4rem 1.5rem 5rem;
+    background:linear-gradient(180deg,var(--bg),#2b1a26);
+  }
+  .finale h2{
+    font-family:'Great Vibes',cursive;
+    font-size:clamp(2.6rem,8vw,4.2rem);
+    color:var(--rose);
+    font-weight:400;
+    margin-bottom:1rem;
+    text-shadow:0 0 40px rgba(227,144,171,.3);
+  }
+  .finale p{max-width:520px;color:var(--ink);margin-bottom:2rem;}
+  .hug-btn{
+    font-family:'Quicksand',sans-serif;
+    font-weight:700;font-size:1rem;
+    background:linear-gradient(120deg,var(--rose),var(--rose-soft));
+    color:#2a1420;
+    border:none;
+    border-radius:999px;
+    padding:1rem 2.4rem;
+    cursor:pointer;
+    box-shadow:0 12px 28px rgba(227,144,171,.3);
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .hug-btn:hover{transform:scale(1.06);box-shadow:0 16px 36px rgba(227,144,171,.45);}
+  .hug-msg{
+    margin-top:1.4rem;
+    font-family:'Great Vibes',cursive;
+    font-size:1.7rem;
+    color:var(--rose);
+    min-height:2.4rem;
+    opacity:0;
+    transition:opacity .6s ease;
+  }
+  .hug-msg.show{opacity:1;}
+  .cat-stamp{
+    margin-top:2.5rem;
+    font-size:.85rem;
+    color:var(--ink-soft);
+    border:2px dashed var(--rose-deep);
+    border-radius:999px;
+    padding:.5rem 1.3rem;
+    transform:rotate(-3deg);
+  }
+
+  footer{
+    text-align:center;
+    padding:1.6rem;
+    font-size:.8rem;
+    color:var(--ink-soft);
+    background:#2b1a26;
+    position:relative;z-index:2;
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= LOADING SCREEN ================= -->
+<!-- ============================================================
+     KEN! THE 9 PHOTOS APPEAR IN TWO PLACES (loading screen + gallery).
+     Just replace photo1.jpg … photo9.jpg below with your file names —
+     each spot is marked with a comment. Put photos in the SAME folder
+     as this HTML file.
+     ============================================================ -->
+<div id="loader">
+  <div class="loader-title">Loading 9 months of us… </div>
+  <div class="loader-grid">
+    <div class="mini-photo"><img src="kk1.jpeg" alt="us" onerror="this.outerHTML='photo1.jpg'"></div>
+    <div class="mini-photo"><img src="kk2.jpeg" alt="us" onerror="this.outerHTML='photo2.jpg'"></div>
+    <div class="mini-photo"><img src="kk3.jpeg" alt="us" onerror="this.outerHTML='photo3.jpg'"></div>
+    <div class="mini-photo"><img src="kk4.jpeg" alt="us" onerror="this.outerHTML='photo4.jpg'"></div>
+    <div class="mini-photo"><img src="kk5.jpeg" alt="us" onerror="this.outerHTML='photo5.jpg'"></div>
+    <div class="mini-photo"><img src="kk6.jpeg" alt="us" onerror="this.outerHTML='photo6.jpg'"></div>
+    <div class="mini-photo"><img src="kk7.jpeg" alt="us" onerror="this.outerHTML='photo7.jpg'"></div>
+    <div class="mini-photo"><img src="kk8.jpeg" alt="us" onerror="this.outerHTML='photo8.jpg'"></div>
+    <div class="mini-photo"><img src="kk9.jpeg" alt="us" onerror="this.outerHTML='photo9.jpg'"></div>
+  </div>
+  <div class="loader-bar"><div id="loaderFill"></div></div>
+  <div id="loaderText">
+    <span class="p1">gathering our memories…</span>
+    <span class="p2">counting all 9 months…</span>
+    <span class="p3">finding my favorite smile…</span>
+    <span class="p4">ready, my love </span>
+  </div>
+  <button id="enterBtn">Enter our world</button>
+</div>
+
+<canvas id="hearts"></canvas>
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <div class="eyebrow">A little corner of the internet, just for us</div>
+  <h1>Ken <span class="amp">&amp;</span> Kayzel</h1>
+  <div class="months">Happy 9th Monthsary, my love ♡</div>
+  <span class="cat"></span>
+  <div class="counter">
+    <div class="num" id="daysCount">273</div>
+    <div class="lbl">days of choosing each other · since February 19</div>
+  </div>
+  <div class="scroll-hint">scroll for our story ↓</div>
+</section>
+
+<!-- ================= OUR STORY ================= -->
+<section class="story">
+  <div class="wrap">
+    <h2 class="section-title fade">How Our Story Began</h2>
+    <div class="divider fade"></div>
+    <div class="story-card fade">
+      <p>It started with a simple chat. I reached out because you loved <span class="anime-chip">anime</span> and suddenly we weren't just talking about shows anymore. We were talking about everything, for hours, like we'd known each other far longer than we actually had.</p>
+      <p> conversation about anime para makausap kita HAHAHA<span class="highlight">Grabe plot twist langga</span></p>
+      <p>On <span class="highlight">February 19</span>, you officially became my girlfriend and every day since has been my favorite episode.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PHOTOS ================= -->
+<section class="photos">
+  <div class="wrap">
+    <h2 class="section-title fade">Us, In Frames</h2>
+    <div class="divider fade">♡ ♡ ♡</div>
+    <div class="gallery">
+      <div class="photo-card fade">
+        <div class="photo-frame"><img src="kk5.jpeg" alt="Us" onerror="this.outerHTML='edit photo1.jpg in the code'"></div>
+        <div class="photo-caption">month one: the beginning</div>
+      </div>
+      <div class="photo-card fade">
+        <div class="photo-frame"><img src="kk10.jpeg" alt="Us" onerror="this.outerHTML='edit photo2.jpg in the code'"></div>
+        <div class="photo-caption">my favorite person</div>
+      </div>
+      <div class="photo-card fade">
+        <div class="photo-frame"><img src="kk11.jpeg" alt="Us" onerror="this.outerHTML='edit photo3.jpg in the code'"></div>
+        <div class="photo-caption">us, always</div>
+      </div>
+      <div class="photo-card fade">
+        <div class="photo-frame"><img src="kk12.png" alt="Us" onerror="this.outerHTML='edit photo4.jpg in the code'"></div>
+        <div class="photo-caption">that smile of yours</div>
+      </div>
+      <div class="photo-card fade">
+        <div class="photo-frame"><img src="kk13.jpeg" alt="Us" onerror="this.outerHTML='edit photo5.jpg in the code'"></div>
+        <div class="photo-caption">moments I keep</div>
+      </div>
+      <div class="photo-card fade">
+        <div class="photo-frame"><img src="kk14.jpeg" alt="Us" onerror="this.outerHTML='edit photo6.jpg in the code'"></div>
+        <div class="photo-caption">through it all</div>
+      </div>
+      <div class="photo-card fade">
+        <div class="photo-frame"><img src="kk15.png" alt="Us" onerror="this.outerHTML='edit photo7.jpg in the code'"></div>
+        <div class="photo-caption">still choosing you</div>
+      </div>
+      <div class="photo-card fade">
+        <div class="photo-frame"><img src="kk16.jpeg" alt="Us" onerror="this.outerHTML='edit photo8.jpg in the code'"></div>
+        <div class="photo-caption">stronger together</div>
+      </div>
+      <div class="photo-card fade">
+        <div class="photo-frame"><img src="kk17.jpeg" alt="Us" onerror="this.outerHTML='edit photo9.jpg in the code'"></div>
+        <div class="photo-caption">nine months, my love</div>
+      </div>
+    </div>
+    <p class="photo-note fade">More memories loading… just like us — always a work in progress, always worth it.</p>
+  </div>
+</section>
+
+<!-- ================= LETTER ================= -->
+<section class="letter-bg">
+  <div class="wrap">
+    <h2 class="section-title fade">A Letter For You</h2>
+    <div class="divider fade">♡ ♡ ♡</div>
+    <div class="letter fade">
+      <p class="salutation">My dearest Kayzel,</p>
+      <p>Happy 9th monthsary. Nine months of you — and I'd choose every single one of them again, even the hard ones. <em>Especially</em> the hard ones.</p>
+      <p>Before anything else, I need you to know this: <strong>you are the most beautiful girl in the world to me.<you/strong> ikaw lang pinaka-maganda sa mata ko</p>
+      <p>This month tested us. You told me I didn't understand your feelings, that I wasn't really listening — and you were right to say it. I'm sorry for the moments I made you feel unheard. And thank you, for being honest with me even when it was difficult. We both made mistakes. But do you know what the most beautiful part is? <strong>We fixed it. Together.</strong></p>
+      <p>Yun nga langga may room pa for improvements sa relationship natin. hope na mag grow and mature pa tayo</p>
+      <p>You're my best plot twist langga, my favorite episode, and the story I never want to end.</p>
+      <p>I love you, Kaykay ko. araw-araw kita mamahalin langga ko</p>
+      <p class="sign"> Ken </p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= REASONS ================= -->
+<section class="reasons">
+  <div class="wrap">
+    <h2 class="section-title fade">Why It's Always You</h2>
+    <div class="divider fade">♡ ♡ ♡</div>
+    <div class="reason-grid">
+      <div class="reason fade"><span class="ico"></span><h3>You're So Pretty</h3><p>Kaykay, you take my breath away every single time. The most beautiful girl and I get to call you mine. How did I get this lucky? kainis kay di kita ma kiss ng madami.</p></div>
+      <div class="reason fade"><span class="ico"></span><h3>You're So Smart</h3><p>Katalino mo langga ko tas ako simpleng Dinosaur lang</p></div>
+      <div class="reason fade"><span class="ico"></span><h3>You Deserve To Be Loved</h3><p>I Love You Langga ko mahal na mahal kita</p></div>
+      <div class="reason fade"><span class="ico"></span><h3>Your Beautiful Heart</h3><p>You care so deeply, you love so honestly, and you never stop giving</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= QUOTES ================= -->
+<section class="quotes">
+  <div class="wrap">
+    <h2 class="section-title fade">Words That Remind Me Of Us</h2>
+    <div class="divider fade">♡ ♡ ♡</div>
+    <div class="quote fade">
+      <blockquote>"Whatever our souls are made of, yours and mine are the same."</blockquote>
+      <cite>— Emily Brontë</cite>
+    </div>
+    <div class="quote fade">
+      <blockquote>"In all the world, there is no heart for me like yours."</blockquote>
+      <cite>— Maya Angelou</cite>
+    </div>
+    <div class="quote fade">
+      <blockquote>"The best love stories aren't the ones where nothing ever goes wrong — they're the ones where, episode after episode, the two characters keep choosing each other."</blockquote>
+      <cite>— for us </cite>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FINALE ================= -->
+<section class="finale">
+  <h2 class="fade">To 9 months… and forever</h2>
+  <p class="fade">Thank you for loving me Kaykay</p>
+  <button class="hug-btn fade" id="hugBtn">Press for a virtual hug </button>
+  <div class="hug-msg" id="hugMsg">Sending you the tightest hug, Kayzel. I love you so much</div>
+  <div class="cat-stamp fade">officially cat-approved </div>
+</section>
+
+<footer>made with love, by Ken · for Kayzel Anne · 11.19 </footer>
+
+<script>
+  /* ---------- JS takes over from CSS fallback ---------- */
+  (function(){
+    var loader = document.getElementById('loader');
+    if(!loader) return;
+    var enterBtn = document.getElementById('enterBtn');
+    var fill = document.getElementById('loaderFill');
+
+    // freeze ALL CSS fallback animations inside the loader
+    var all = loader.querySelectorAll('*');
+    for(var k=0;k<all.length;k++){ all[k].style.animation = 'none'; }
+    loader.style.animation = 'none';
+    fill.style.width = '0%';
+    loader.querySelectorAll('.mini-photo').forEach(function(m){ m.style.opacity='1'; m.style.transform='none'; });
+    enterBtn.style.opacity = '0';
+    enterBtn.style.transform = 'translateY(12px)';
+
+    var progress = 0, phrases = ['gathering our memories…','counting all 9 months…','finding my favorite smile…','ready, my love ♡'];
+    var textSpans = loader.querySelectorAll('#loaderText span');
+    var iv = setInterval(function(){
+      progress += Math.random()*4 + 2;
+      if(progress >= 100){
+        progress = 100; clearInterval(iv);
+        enterBtn.style.opacity = '1';
+        enterBtn.style.transform = 'none';
+        enterBtn.style.animation = 'pulse 2s ease infinite';
+        textSpans.forEach(function(s){ s.style.opacity = '0'; });
+        textSpans[3].style.opacity = '1';
+      } else {
+        var idx = Math.min(Math.floor(progress/26), 3);
+        textSpans.forEach(function(s,i){ s.style.opacity = (i===idx) ? '1' : '0'; });
+      }
+      fill.style.width = progress + '%';
+    }, 120);
+
+    enterBtn.addEventListener('click', function(){
+      loader.style.transition = 'opacity 1s ease, visibility 1s';
+      loader.style.opacity = '0';
+      loader.style.visibility = 'hidden';
+      setTimeout(function(){ loader.remove(); }, 1100);
+    });
+    // safety: auto-remove loader after 12s
+    setTimeout(function(){ if(loader.parentNode) loader.remove(); }, 12000);
+  })();
+</script>
+
+<script>
+  /* ---------- days together counter ---------- */
+  (function(){
+    var start = new Date('2026-02-19T00:00:00');
+    var now = new Date();
+    var days = Math.floor((now - start) / 86400000);
+    document.getElementById('daysCount').textContent = days.toLocaleString();
+  })();
+</script>
+
+<script>
+  /* ---------- floating hearts ---------- */
+  (function(){
+    var canvas = document.getElementById('hearts');
+    if(!canvas || !canvas.getContext) return;
+    var ctx = canvas.getContext('2d');
+    var W, H, hearts = [];
+    var colors = ['#f4b8c9','#e8a0b4','#b9a8d9','#f7d4de','#e6b3c7'];
+    var swayOff = 0;
+
+    function resize(){ W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
+    resize(); addEventListener('resize', resize);
+
+    function spawn(){
+      return {
+        x: Math.random()*W,
+        y: H + 30,
+        size: 6 + Math.random()*14,
+        speed: .3 + Math.random()*.8,
+        sway: Math.random()*2*Math.PI,
+        swaySpeed: .005 + Math.random()*.01,
+        alpha: .2 + Math.random()*.4,
+        color: colors[Math.floor(Math.random()*colors.length)],
+        rot: (Math.random()-.5)*.6
+      };
+    }
+    for(var i=0;i<26;i++){ var h = spawn(); h.y = Math.random()*H; hearts.push(h); }
+
+    function drawHeart(x,y,s,rot,alpha,color){
+      ctx.save();
+      ctx.translate(x,y);
+      ctx.rotate(rot + Math.sin(Date.now()*.0005 + swayOff)*.15);
+      ctx.scale(s/30, s/30);
+      ctx.globalAlpha = alpha;
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.moveTo(0,10);
+      ctx.bezierCurveTo(-25,-10,-10,-30,0,-15);
+      ctx.bezierCurveTo(10,-30,25,-10,0,10);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function tick(){
+      ctx.clearRect(0,0,W,H);
+      swayOff += .01;
+      for(var j=0;j<hearts.length;j++){
+        var hh = hearts[j];
+        hh.y -= hh.speed;
+        hh.sway += hh.swaySpeed;
+        hh.x += Math.sin(hh.sway)*.4;
+        if(hh.y < -40) hearts[j] = spawn();
+        drawHeart(hh.x, hh.y, hh.size, hh.rot, hh.alpha, hh.color);
+      }
+      requestAnimationFrame(tick);
+    }
+    tick();
+  })();
+</script>
+
+<script>
+  /* ---------- scroll fade-in ---------- */
+  (function(){
+    if(!('IntersectionObserver' in window)){
+      document.querySelectorAll('.fade').forEach(function(el){ el.classList.add('visible'); });
+      return;
+    }
+    var observer = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add('visible'); observer.unobserve(e.target); }
+      });
+    }, {threshold:.15});
+    document.querySelectorAll('.fade').forEach(function(el){ observer.observe(el); });
+  })();
+</script>
+
+<script>
+  /* ---------- virtual hug ---------- */
+  (function(){
+    var hugBtn = document.getElementById('hugBtn');
+    var hugMsg = document.getElementById('hugMsg');
+    var hugs = [
+      "Sending you the tightest hug, Kaykay. I love you! ♡",
+      "I Love You Pretty Kaykay",
+      "Ken Dakog Oten"
+    ];
+    var hugCount = 0;
+    hugBtn.addEventListener('click', function(){
+      hugMsg.textContent = hugs[hugCount % hugs.length];
+      hugCount++;
+      hugMsg.classList.remove('show');
+      void hugMsg.offsetWidth;
+      hugMsg.classList.add('show');
+    });
+  })();
+</script>
+
+</body>
+</html>
